@@ -2,21 +2,34 @@ GPPPARAMS = -m32 -fno-use-cxa-atexit -nostdlib -fno-builtin -fno-rtti -fno-excep
 ASPARAMS = --32
 LDPARAMS = -melf_i386
 
-objects = loader.o kernel.o
+objects = compiled/loader.o compiled/kernel.o
 
 %.o: %.cpp
 	g++ $(GPPPARAMS) -o $@ -c $<
+	mv --force $@ compiled/
 
 %.o: %.s
 	as $(ASPARAMS) -o $@ $<
+	mv --force $@ compiled/
+
+
+createkernel:
+	make kernel.o
+	make loader.o
+	make mykernel.bin
+
+createiso:
+	make createkernel
+	make mykernel.iso
 
 mykernel.bin: linker.ld $(objects)
 	ld $(LDPARAMS) -T $< -o $@ $(objects)
+	mv --force $@ compiled/
 
 install: mykernel.bin
 	sudo cp $< /boot/mykernel.bin
 
-mykernel.iso: mykernel.bin
+mykernel.iso: compiled/mykernel.bin
 	mkdir iso
 	mkdir iso/boot
 	mkdir iso/boot/grub
