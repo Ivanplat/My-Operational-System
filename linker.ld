@@ -1,5 +1,5 @@
 ENTRY(loader)
-OUTPUT_FORMAT(elf32-i368)
+OUTPUT_FORMAT(elf32-i386)
 OUTPUT_ARCH(i386:i386)
 
 SECTIONS
@@ -13,7 +13,7 @@ SECTIONS
         *(.rodata)
     }
 
-    .data
+    .data :
     {
         start_ctors = .;
         KEEP(*(.init_array));
@@ -22,7 +22,7 @@ SECTIONS
 
         *(.data)
     }
-    .bss
+    .bss :
     {
         *(.bss)
     }

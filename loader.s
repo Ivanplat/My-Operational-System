@@ -9,16 +9,18 @@
 
 .section .text
 .extern KernelMain
-global .loader
+.global loader
 
 loader:
-    mov $kernel_stack. %esp
+    mov $kernel_stack, %esp
     push %eax
     push %ebx
     call KernelMain
 
 _stop:
-
+    cli
+    hlt
+    jmp _stop
 
 .section .bss
 .space 2*1024*1024

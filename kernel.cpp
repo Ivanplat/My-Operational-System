@@ -1,4 +1,4 @@
-void printf(char* str)
+void printf(const char* str)
 {
     unsigned short* VideoMemory = (unsigned short*)0xb8000;
 
@@ -8,7 +8,7 @@ void printf(char* str)
     }
 }
 
-void KernelMain(void* multiboot_structure, unsigned int magic_number)
+extern "C" void KernelMain(void* multiboot_structure, unsigned int magicnumber)
 {
     printf("Hello");
     while(true);
